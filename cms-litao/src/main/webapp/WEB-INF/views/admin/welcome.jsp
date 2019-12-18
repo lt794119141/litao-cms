@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<div class="row">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+ <div class="row">
  	<div class="alert alert-primary col-12" role="alert">
 	  欢迎使用CMS内容管理系统
 </div>

@@ -4,28 +4,51 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.litao.cms.dao.UserDao;
 import com.litao.cms.pojo.User;
 import com.litao.cms.service.UserService;
 
-/**   
-* @Title: UserServiceImpl.java 
-* @Package com.wenjiaquan.cms.service.impl 
-* @Description: TODO(用一句话描述该文件做什么) 
-* @author A18ccms A18ccms_gmail_com   
-* @date 2019年12月10日 下午6:22:40 
-* @version V1.0   
-*/
-@Transactional
 @Service
 public class UserServiceImpl implements UserService {
-	@Autowired
-	private UserDao userdao;
 	
-	public List<User> selectUser(){
-		List<User> list=userdao.selectUser();
-		return list;
+	@Autowired
+	private UserDao userDao;
+
+	@Override
+	public boolean register(User user) {
+		// TODO Auto-generated method stub
+		return false;
 	}
+
+	@Override
+	public User getByUsername(String username) {
+		return userDao.selectByUsername(username);
+	}
+
+	@Override
+	public boolean locked(Integer userId) {
+		return userDao.updateLocked(userId,1)>0;
+	}
+
+	@Override
+	public boolean unLocked(Integer userId) {
+		return userDao.updateLocked(userId,0)>0;
+	}
+
+	@Override
+	public int addScore(Integer userId, int score) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public PageInfo<User> getPageInfo(User user, int pageNum, int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<User> userList = userDao.select(user);
+		return new PageInfo<>(userList);
+	}
+	
 }

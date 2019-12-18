@@ -1,40 +1,58 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-    <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE>
 <html>
 <head>
-<link href="<%=request.getContextPath() %>/css/bootstrap.min.css" rel="stylesheet">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Cms后台登录</title>
+<link href="/public/css/bootstrap.min.css" rel="stylesheet">
+<link href="/public/css/cms.css" rel="stylesheet">
 </head>
-<body style="background:url(<%=request.getContextPath() %>/img/wallhaven-96ede8.png);">
-<div id="login" align="center">
-        <h3 class="text-center text-white pt-5">登录界面</h3>
-        <div class="container">
-            <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-10">
-                    <div id="login-box" class="col-md-12" style="opacity: 0.8">
-                        <form id="login-form" class="form" action="" method="post">
-                        <h3 class="text-center text-info">Login</h3>
-                            <div class="form-group col-mt-10">
-                                <label for="username" class="text-info" ><br></label><br>
-                                <input type="text" name="username" id="username" class="form-control" placeholder="请输入用户名">
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="text-info"><br></label><br>
-                                <input type="password" name="password" id="password" class="form-control" placeholder="请输入密码">
-                            </div>
-                            <div class="form-group">
-                                <!-- <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br> -->
-                                <a href="home"><input type="button" name="submit" class="btn btn-info btn-md" value="登录"></a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<body>
+	<div class="container-fluid">
+		<div class="col-4 offset-4 loginForm">
+			<h3>欢迎使用CMS系统</h3>
+			<div class="alert alert-danger" role="alert" style="display: none">
+			</div>
+			<form id="loginForm">
+			  <div class="form-group">
+			    <input type="text" id="username" name="username" class="form-control" placeholder="请输入用户名...">
+			    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+			  </div>
+			  <div class="form-group">
+			    <!-- <label for="exampleInputPassword1">密码</label> -->
+			    <input type="password" id="password" name="password" class="form-control"  placeholder="请输入密码...">
+			  </div>
+			  <button type="button" class="btn btn-primary" onclick="login();">登录</button>
+			  <!-- <label for="exampleInputPassword1">没有帐号，去<a href="/">注册</a></label> -->
+			</form>
+		</div>
+	</div>
+<script type="text/javascript" src="/public/js/jquery.min.1.12.4.js"></script>
+<script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	function login(){
+		//空判断
+		var username = $("#username").val();
+		var password = $("#password").val();
+		if(username==null || password==""){
+			$(".alert").html("请输入用户名和密码");
+			$(".alert").show();
+			return;
+		}
+		$(".alert").hide();
+		//后台验证
+		var formData = $("#loginForm").serialize();
+		$.post("/admin/user/login",formData,function(res){
+			if(res.result){
+				//验证通过跳转到后台首页
+				location.href="/admin/home";
+			}else{
+				//否则提示错误信息
+				$(".alert").html(res.message);
+				$(".alert").show();
+			}
+		});
+	}
+</script>
 </body>
 </html>

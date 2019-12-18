@@ -1,41 +1,36 @@
 package com.litao.cms.pojo;
 
-public class Tag {
+
+import java.io.Serializable;
+
+public class Tag  implements Serializable{
+    /**   
+	 * @Fields serialVersionUID : TODO(这个变量表示什么)   
+	 */  
+	private static final long serialVersionUID = 1L;
+
 	private Integer id;
-	
-	private String tagname;
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getTagname() {
-		return tagname;
-	}
-
-	public void setTagname(String tagname) {
-		this.tagname = tagname;
-	}
-
-	@Override
+    private String tagname;
+    
+    @Override
 	public String toString() {
 		return "Tag [id=" + id + ", tagname=" + tagname + "]";
 	}
 
-	public Tag(Integer id, String tagname) {
-		super();
-		this.id = id;
-		this.tagname = tagname;
-	}
+	public Integer getId() {
+        return id;
+    }
 
-	public Tag() {
-		super();
-	}
-	
-	
-	
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTagname() {
+        return tagname;
+    }
+
+    public void setTagname(String tagname) {
+        this.tagname = tagname == null ? null : tagname.trim();
+    }
 }
