@@ -8,7 +8,7 @@
 	<img src="<%=feildValue %>" class="img-rounded" width="80px;" id="viewImg">
 	<div style="display: none;" id="imageuploadDiv"	name="imageuploadDiv">
 		<input type="file" id="fileName" name="fileName" onchange="ajaxFileUpload(this,'${feild}');"><br> 
-		<input	type="hidden" id="<%=feildName %>" name="<%=feildName %>" value="<%=feildValue=="/public/img/upload.jpg"?null:feildValue %>" isImg=true>
+		<input	type="hidden" id="<%=feildName %>" name="<%=feildName %>" value="<%=feildValue=="/public/img/upload.jpg"?"":feildValue %>" isImg=true>
 	</div>
 </div>
 <script type="text/javascript">

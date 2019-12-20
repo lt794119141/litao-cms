@@ -5,20 +5,58 @@
   <select id="select" resultType="Article">
 		select article.*,article.channel_id channelId,article.user_id userId,article.category_id categoryId,channel.name channelName,cate.name categoryName
 		from cms_article article,cms_channel channel,cms_category cate
-		WHERE article.channel_id=channel.id AND article.category_id=cate.id
+		WHERE article.channel_id=channel.id AND article.category_id=cate.id and article.deleted=0
 		<if test="article.channelId!=null">
 			and article.channel_id = #{article.channelId}
 		</if>
 		<if test="article.title!=null and article.title!=''">
 			and article.title like '%${article.title}%'
 		</if>
+		<if test="article.userId!=null">
+			and article.user_id=#{article.userId}
+		</if>
 		<if test="article.status!=null">
 			and article.status=#{article.status}
 		</if>
+		<if test="article.statusIds!=null">
+			and article.status in (${article.statusIds})
+		</if>
+		order by updated desc
 	</select>
 	
+	<select id="selectByHot" resultType="Article">
+		select article.*,article.channel_id channelId,article.user_id userId,article.category_id categoryId,user.nickname
+		from cms_article article,cms_user user
+		WHERE article.user_id=user.id and article.deleted=0 AND article.`status`=1 AND article.hot>0
+		order by article.hot desc
+	</select>
+	
+	<select id="selectListByChannelIdAndCateId" resultType="Article">
+		select article.*,article.channel_id channelId,article.user_id userId,article.category_id categoryId,user.nickname
+		from cms_article article,cms_user user
+		WHERE article.user_id=user.id and article.deleted=0 AND article.`status`=1 
+		AND article.channel_id=#{channelId}
+		<if test="cateId>0">
+			and category_id=#{cateId}
+		</if>
+		order by article.created desc
+	</select>
+	
+	
 	<select id="selectById" resultType="Article">
-		select * from cms_article where id=#{id}
+		select article.*,article.channel_id channelId,article.user_id userId,article.category_id categoryId
+		 from cms_article article where id=#{id}
+	</select>
+	
+	<select id="selectByIds" resultType="Article">
+		select article.*,article.channel_id channelId,article.user_id userId,article.category_id categoryId
+		 from cms_article article where id in (${ids})
+	</select>
+	
+	<select id="selectListByChannelId" resultType="Article">
+		select *
+		 from cms_article article where deleted=0 and status=1 and channel_id=#{channelId} and id!=#{articleId}
+		 limit ${num}
 	</select>
 	
 	<select id="count" resultType="int">
@@ -45,15 +83,11 @@
 	      channel_id = #{article.channelId},
 	      category_id = #{article.categoryId},
 	      user_id = #{article.userId},
-	      hits = #{article.hits},
-	      hot = #{article.hot},
 	      status = #{article.status},
-	      deleted = #{article.deleted},
-	      created = #{article.created},
 	      updated = #{article.updated},
 	      commentCnt = #{article.commentcnt},
 	      content = #{article.content}
-	    where id = #{id}
+	    where id = #{article.id}
 	</update>
 	
 	<update id="updateStatus">
@@ -70,11 +104,17 @@
 	    where id = #{id}
 	</update>
 	
-	<delete id="deleteById">
-		delete from cms_article where id=#{id}
-	</delete>
+	<update id="updateDeletedById">
+		update cms_article
+	    set 
+	      deleted = 1
+	    where id = #{id}
+	</update>
 	
-	<delete id="deleteByIds">
-		delete from cms_article where id in(${ids})
-	</delete>
+	<update id="updateDeletedByIds">
+		update cms_article
+	    set 
+	      deleted = 1
+	    where id in (${ids})
+	</update>
 </mapper>

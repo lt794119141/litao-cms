@@ -9,6 +9,10 @@
 		select * from cms_category where id=#{id}
 	</select>
 	
+	<select id="selectListByChannelId" resultType="Category">
+		select * from cms_category where channel_id=#{channelId}
+	</select>
+	
 	<select id="count" resultType="int">
 		select count(1) from cms_category
 	</select>

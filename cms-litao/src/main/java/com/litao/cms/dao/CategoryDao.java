@@ -1,11 +1,10 @@
 package com.litao.cms.dao;
+
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.litao.cms.pojo.Category;
-
-
 
 public interface CategoryDao {
 	/**
@@ -71,4 +70,13 @@ public interface CategoryDao {
 	 * @throws
 	 */
 	int deleteByIds(@Param("ids") String ids);
+	/**
+	 * @Title: selectListByChannelId   
+	 * @Description: 根据频道Id，查询列表
+	 * @param: @param channelId
+	 * @param: @return      
+	 * @return: List<Category>      
+	 * @throws
+	 */
+	List<Category> selectListByChannelId(Integer channelId);
 }

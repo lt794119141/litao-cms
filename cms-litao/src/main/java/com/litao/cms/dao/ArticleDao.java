@@ -60,7 +60,7 @@ public interface ArticleDao {
 	 * @return: int      
 	 * @throws
 	 */
-	int deleteById(@Param("id") Integer id);
+	int updateDeletedById(@Param("id") Integer id);
 	/**
 	 * @Title: deleteByIds   
 	 * @Description: 根据Ids批量删除记录   
@@ -69,7 +69,7 @@ public interface ArticleDao {
 	 * @return: int      
 	 * @throws
 	 */
-	int deleteByIds(@Param("ids") String ids);
+	int updateDeletedByIds(@Param("ids") String ids);
 	/**
 	 * @Title: updateStatus   
 	 * @Description: 修改文章状态   
@@ -89,4 +89,43 @@ public interface ArticleDao {
 	 * @throws
 	 */
 	int addHot(@Param("id") Integer id);
+	/**
+	 * @Title: selectByIds   
+	 * @Description: 根据Ids查询文章  
+	 * @param: @param ids
+	 * @param: @return      
+	 * @return: List<Article>      
+	 * @throws
+	 */
+	List<Article> selectByIds(@Param("ids") String ids);
+	/**
+	 * @Title: selectListByChannelId   
+	 * @Description: 根据频道Id查询文章   
+	 * @param: @param channelId
+	 * @param: @param aritcleId 文章Id不能等于该Id
+	 * @param: @param num 文章条数
+	 * @param: @return      
+	 * @return: List<Article>      
+	 * @throws
+	 */
+	List<Article> selectListByChannelId(@Param("channelId") Integer channelId, @Param("articleId") Integer articleId, @Param("num") int num);
+	/**
+	 * @Title: selectByHot   
+	 * @Description: 查询热点文章   
+	 * @param: @return      
+	 * @return: List<Article>      
+	 * @throws
+	 */
+	List<Article> selectByHot();
+	/**
+	 * @Title: selectListByChannelIdAndCateId   
+	 * @Description: 根据频道Id和分类Id查询文章   
+	 * @param: @param channelId
+	 * @param: @param cateId
+	 * @param: @param pageNo
+	 * @param: @return      
+	 * @return: List<Article>      
+	 * @throws
+	 */
+	List<Article> selectListByChannelIdAndCateId(@Param("channelId") Integer channelId, @Param("cateId") Integer cateId);
 }

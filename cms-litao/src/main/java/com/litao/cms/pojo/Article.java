@@ -25,6 +25,8 @@ public class Article implements Serializable{
     private String categoryName;
 
     private Integer userId;
+    
+    private String nickname;
 
     private Integer hits;
 
@@ -38,9 +40,12 @@ public class Article implements Serializable{
 
     private Date updated;
 
-    private String commentcnt;
+    private int commentcnt;
 
     private String content;
+    
+    private String statusIds;
+    
     
     @Override
 	public String toString() {
@@ -49,6 +54,30 @@ public class Article implements Serializable{
 				+ status + ", deleted=" + deleted + ", created=" + created + ", updated=" + updated + ", commentcnt="
 				+ commentcnt + ", content=" + content + "]";
 	}
+
+    
+    
+	public String getStatusIds() {
+		return statusIds;
+	}
+
+	public void setStatusIds(String statusIds) {
+		this.statusIds = statusIds;
+	}
+
+
+
+	public String getNickname() {
+		return nickname;
+	}
+
+
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+
 
 	public Integer getId() {
         return id;
@@ -162,15 +191,17 @@ public class Article implements Serializable{
         this.updated = updated;
     }
 
-    public String getCommentcnt() {
-        return commentcnt;
-    }
+    
 
-    public void setCommentcnt(String commentcnt) {
-        this.commentcnt = commentcnt == null ? null : commentcnt.trim();
-    }
+    public int getCommentcnt() {
+		return commentcnt;
+	}
 
-    public String getContent() {
+	public void setCommentcnt(int commentcnt) {
+		this.commentcnt = commentcnt;
+	}
+
+	public String getContent() {
         return content;
     }
 

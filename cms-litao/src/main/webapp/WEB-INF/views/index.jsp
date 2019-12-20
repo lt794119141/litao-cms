@@ -1,11 +1,15 @@
-h<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="/public/css/bootstrap.min.css" rel="stylesheet">
 <link href="/public/css/index.css" rel="stylesheet">
+<style type="text/css">
+	
+</style>
 <title>前台首页</title>
 </head>
 <body>
@@ -13,68 +17,40 @@ h<%@ page language="java" contentType="text/html; charset=UTF-8"
 		<a class="nav-link navbar-brand" href="#">
 			<img src="https://v4.bootcss.com/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
 		</a>
-		<a class="nav-link" href="#">发文</a> 
-		<a class="nav-link" href="/user/center">个人中心</a> 
-		<a class="nav-link" href="javascript:;">蝈蝈</a>
-		<a class="nav-link" href="/user/logout">退出</a>
-		<a class="nav-link" href="/user/login">登录</a>
+		<c:if test="${USER_SESSION_ID!=null }">
+			<a class="nav-link" href="/user/center">发文</a> 
+			<a class="nav-link" href="/user/center">个人中心</a> 
+			<a class="nav-link" href="javascript:;">${USER_SESSION_ID.nickname }</a>
+			<a class="nav-link" href="/user/logout">退出</a>
+		</c:if>
+		<c:if test="${USER_SESSION_ID==null }">
+			<a class="nav-link" href="/user/login">登录</a>
+		</c:if>
 	</nav>
 	<div class="container-fluid">
 		<div class="row offset-1" style="margin-top: 15px;">
 			<div class="col-1">
 				<!-- 左侧导航 -->
 				<ul class="nav flex-column">
-				  <li class="nav-item">
-				    <a class="nav-link select" href="#">热点</a>
+				   <li class="nav-item">
+				    <a class="nav-link <c:if test="${channelId==null }">select</c:if>" href="/">热点</a>
 				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">直播</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">图片</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">科技</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">热点</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">直播</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">图片</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">科技</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">热点</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">直播</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">图片</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">科技</a>
-				  </li>
+				  <c:forEach items="${channelList }" var="item">
+					  <li class="nav-item">
+					    <a class="nav-link <c:if test="${channelId==item.id }">select</c:if>" href="/${item.id }/0/1.html">${item.name }</a>
+					  </li>
+				  </c:forEach>
 				</ul>
 			</div>
 			<div class="col-6">
 				
 				<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 				  <div class="carousel-inner">
-				    <div class="carousel-item active">
-				      <img src="https://p3.pstatp.com/obj/ies.fe.mis/9987fc19af47aa2bf911ebbf67bbd16f.jpeg.jpg" class="d-block w-100" alt="...">
-				    </div>
-				    <div class="carousel-item">
-				      <img src="https://p3.pstatp.com/obj/ies.fe.mis/9987fc19af47aa2bf911ebbf67bbd16f.jpeg.jpg" class="d-block w-100" alt="...">
-				    </div>
-				    <div class="carousel-item">
-				      <img src="https://p3.pstatp.com/obj/ies.fe.mis/4ff4516ec519b75fd377b22e7c320425.jpeg.jpg" class="d-block w-100" alt="...">
-				    </div>
+					  <c:forEach items="${slideList }" var="item" varStatus="s">
+						  <div class="carousel-item <c:if test="${s.index==0 }">active</c:if>">
+						      <a href="${item.url }" target="_blank"><img src="${item.picture }" class="d-block w-100" alt="${item.title }"></a>
+						  </div>
+					  </c:forEach>
 				  </div>
 				  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
 				    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -86,81 +62,37 @@ h<%@ page language="java" contentType="text/html; charset=UTF-8"
 				  </a>
 				</div>
 								
-				
-				<ul class="nav nav-tabs">
-				  <li class="nav-item ">
-				    <a class="nav-link active" href="#">全部</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">互联网</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link" href="#">软件</a>
-				  </li>
-				</ul>
-				
+				<c:if test="${cateList.size()>0 }">
+					<ul class="nav nav-tabs">
+						<li class="nav-item ">
+						    <a class="nav-link <c:if test="${cateId==0 }">active</c:if>" href="/${channelId }/0/1.html">全部</a>
+						</li>
+					  <c:forEach items="${cateList }" var="item">
+						  <li class="nav-item">
+						    <a class="nav-link <c:if test="${cateId==item.id }">active</c:if>" href="/${channelId }/${item.id }/1.html">${item.name }</a>
+						  </li>
+					  </c:forEach>
+					</ul>
+				</c:if>
 				<div style="margin-top: 18px;">
-					<div class="media">
-					  <img src="https://p3.pstatp.com/list/190x124/pgc-image/d14a9ef6392b4afa87d6f6f7b85dd9a8" class="mr-3" alt="...">
-					  <div class="media-body">
-					    <h4 class="mt-1">
-					    	<a href="/article/1.html">这次，杨超越的纯洁人设崩塌了？</a>
-					    </h4>
-					    <p style="color: #999;">蝈蝈  20分钟前</p>
-					  </div>
-					</div>
-					<div class="media">
-					  <img src="https://p3.pstatp.com/list/190x124/pgc-image/d14a9ef6392b4afa87d6f6f7b85dd9a8" class="mr-3" alt="...">
-					  <div class="media-body">
-					    <h4 class="mt-1">
-					    	<a href="#">这次，杨超越的纯洁人设崩塌了？</a>
-					    </h4>
-					    <p style="color: #999;">蝈蝈  2019-10-24 18:50</p>
-					  </div>
-					</div>
-					<div class="media">
-					  <img src="https://p3.pstatp.com/list/190x124/pgc-image/d14a9ef6392b4afa87d6f6f7b85dd9a8" class="mr-3" alt="...">
-					  <div class="media-body">
-					    <h4 class="mt-1">
-					    	<a href="#">这次，杨超越的纯洁人设崩塌了？</a>
-					    </h4>
-					    <p style="color: #999;">蝈蝈  2019-10-24 18:50</p>
-					  </div>
-					</div>
-					<div class="media">
-					  <img src="https://p3.pstatp.com/list/190x124/pgc-image/d14a9ef6392b4afa87d6f6f7b85dd9a8" class="mr-3" alt="...">
-					  <div class="media-body">
-					    <h4 class="mt-1">
-					    	<a href="#">这次，杨超越的纯洁人设崩塌了？</a>
-					    </h4>
-					    <p style="color: #999;">蝈蝈  2019-10-24 18:50</p>
-					  </div>
-					</div>
-					<div class="media">
-					  <img src="https://p3.pstatp.com/list/190x124/pgc-image/d14a9ef6392b4afa87d6f6f7b85dd9a8" class="mr-3" alt="...">
-					  <div class="media-body">
-					    <h4 class="mt-1">
-					    	<a href="#">这次，杨超越的纯洁人设崩塌了？</a>
-					    </h4>
-					    <p style="color: #999;">蝈蝈  2019-10-24 18:50</p>
-					  </div>
-					</div>
-					<div class="media">
-					  <img src="https://p3.pstatp.com/list/190x124/pgc-image/d14a9ef6392b4afa87d6f6f7b85dd9a8" class="mr-3" alt="...">
-					  <div class="media-body">
-					    <h4 class="mt-1">
-					    	<a href="#">这次，杨超越的纯洁人设崩塌了？</a>
-					    </h4>
-					    <p style="color: #999;">蝈蝈  2019-10-24 18:50</p>
-					  </div>
-					</div>
+					<c:forEach items="${pageInfo.list }" var="item">
+					  <div class="media">
+						  <img src="${item.picture }" class="mr-3" alt="...">
+						  <div class="media-body">
+						    <h4 class="mt-1">
+						    	<a href="/article/${item.id}.html" target="_blank">${item.title }</a>
+						    </h4>
+						    <p style="color: #999;">${item.nickname }  <fmt:formatDate value="${item.created }" pattern="yyyy-MM-dd HH:mm:ss"/></p>
+						  </div>
+						</div>
+				  </c:forEach>
 				</div>
-				<p style="text-align: center;">
-					<a href="#">加载更多</a>
-				</p>
+				<div style="text-align: center;">
+					<jsp:include page="common/page.jsp"></jsp:include>
+				</div>
 			</div>
 			<div class="col-3">
-				<div class="right" >
+				<div class="right">
 					<div>最新文章</div>
 					<ul class="list-unstyled">
 					  <li class="media">
@@ -244,5 +176,10 @@ h<%@ page language="java" contentType="text/html; charset=UTF-8"
 	</div>
 	<script type="text/javascript" src="/public/js/jquery.min.1.12.4.js"></script>
 	<script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		function gotoPage(pageNum){
+			window.location.href="/hot/"+pageNum+".html"
+		}
+	</script>
 </body>
 </html>

@@ -47,7 +47,6 @@ public class AdminUserController {
 		}
 		//判断密码
 		String string2md5 = CmsMd5Util.string2MD5(user.getPassword());
-		System.out.println("+++++++++++++++++++++"+string2md5);
 		if(string2md5.equals(userInfo.getPassword())) {
 			session.setAttribute(CmsConstant.UserAdminSessionKey, userInfo);
 			return JsonResult.sucess();
@@ -57,7 +56,7 @@ public class AdminUserController {
 	
 	@RequestMapping("logout")
 	public Object logout(HttpServletResponse response,HttpSession session) {
-		session.invalidate();
+		session.removeAttribute(CmsConstant.UserAdminSessionKey);
 		return "redirect:/admin/";
 	}
 }

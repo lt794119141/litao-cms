@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.litao.cms.pojo.Article;
+import com.litao.cms.pojo.Category;
 import com.litao.cms.pojo.Channel;
 import com.litao.cms.pojo.User;
 
@@ -46,4 +47,78 @@ public interface ArticleService {
 	 * @throws
 	 */
 	public List<Channel> getChannelList();
+	/**
+	 * @Title: getById   
+	 * @Description: 根据id查询文章 
+	 * @param: @param id
+	 * @param: @return      
+	 * @return: Article      
+	 * @throws
+	 */
+	public Article getById(Integer id);
+	/**
+	 * @Title: save   
+	 * @Description: 保存或修改文章 
+	 * @param: @param article
+	 * @param: @return      
+	 * @return: boolean      
+	 * @throws
+	 */
+	boolean save(Article article);
+	/**
+	 * @Title: getCateListByChannelId   
+	 * @Description: 根据频道Id查询分类列表  
+	 * @param: @param channelId
+	 * @param: @return      
+	 * @return: List<Category>      
+	 * @throws
+	 */
+	List<Category> getCateListByChannelId(Integer channelId);
+	/**
+	 * @Title: delByIds   
+	 * @Description: 批量删除   
+	 * @param: @param ids
+	 * @param: @return      
+	 * @return: boolean      
+	 * @throws
+	 */
+	boolean delByIds(String ids);
+	/**
+	 * @Title: isAllCheck   
+	 * @Description: 根据Ids判断文章是否已审核   
+	 * @param: @param ids
+	 * @param: @return      
+	 * @return: boolean      
+	 * @throws
+	 */
+	boolean isAllCheck(String ids);
+	/**
+	 * @Title: getListByChannelId   
+	 * @Description: 根据频道Id查询文章列表   
+	 * @param: @param channelId
+	 * @param: @return      
+	 * @return: List<Article>      
+	 * @throws
+	 */
+	List<Article> getListByChannelId(Integer channelId, Integer id, int num);
+	/**
+	 * @Title: getHotList   
+	 * @Description: 热点文章   
+	 * @param: @param pageNum
+	 * @param: @return      
+	 * @return: PageInfo<Article>      
+	 * @throws
+	 */
+	PageInfo<Article> getHotList(int pageNum);
+	/**
+	 * @Title: getListByChannelIdAndCateId   
+	 * @Description: 根据频道Id和分类Id查询文章列表  
+	 * @param: @param channelId
+	 * @param: @param cateId
+	 * @param: @param pageNo
+	 * @param: @return      
+	 * @return: PageInfo<Article>      
+	 * @throws
+	 */
+	PageInfo<Article> getListByChannelIdAndCateId(Integer channelId, Integer cateId, Integer pageNo);
 }

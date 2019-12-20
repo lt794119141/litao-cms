@@ -3,8 +3,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Cms后台登录</title>
+<title>个人中心</title>
 <link href="/public/css/bootstrap.min.css" rel="stylesheet">
+<link href="/public/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="/public/css/cms.css" rel="stylesheet">
 <!-- <link href="/public/css/index.css" rel="stylesheet"> -->
 
@@ -38,5 +39,7 @@
 <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/public/js/cms.js"></script>
 <script type="text/javascript" src="/public/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="/public/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/public/js/bootstrap-datetimepicker.fr.js"></script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package com.litao.cms.pojo;
 
-
 public class VoteContent {
     private Integer id;
 

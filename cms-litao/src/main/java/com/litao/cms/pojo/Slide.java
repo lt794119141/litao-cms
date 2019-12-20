@@ -1,6 +1,5 @@
 package com.litao.cms.pojo;
 
-
 import java.io.Serializable;
 
 public class Slide  implements Serializable{

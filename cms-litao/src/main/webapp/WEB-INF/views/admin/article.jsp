@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
   	<form class="form-inline" id="queryForm">
 	  <div class="form-group mx-sm-3 mb-2">
 	    <input type="text" name="name" class="form-control" placeholder="请输入文章标题">
@@ -26,7 +27,7 @@
 	        <option value="-1" <c:if test="${article.status==-1 }">selected="selected"</c:if>>审核未通过</option>
 	      </select>
 	  </div>
-	  <input type="hidden" name="pageNum" value="1">
+	  <input type="hidden" name="pageNum" value="${pageInfo.pageNum }">
 	  <button type="button" class="btn btn-primary mb-2" onclick="query()">查询</button>
 	</form>
   
@@ -49,7 +50,7 @@
        <tr>
 	      <th><input type="checkbox" value="${item.id }" name="chk_list"></th>
 	      <th scope="row">${item.id }</th>
-	      <td>${item.title }</td>
+	      <td title="${item.title }">${fn:substring(item.title,0,10) }</td>
 	      <td>${item.channelName }</td>
 	      <td>${item.categoryName }</td>
 	      <td>${item.hot>0?"是":"否"}</td>
@@ -58,6 +59,7 @@
 	      <td>
 	      	<button type="button" class="btn btn-primary" onclick="check('${item.id}')">审核</button>
 	      	<button type="button" class="btn btn-primary" onclick="addHot('${item.id}')">加热</button>
+	      	<button type="button" class="btn btn-primary" onclick="view('${item.id}')">查看</button>
 	      </td>
 	    </tr>
    	</c:forEach>
@@ -118,7 +120,7 @@
 	
 	function addHot(id){
 		$.post("/admin/article/addHot",{id:id},function(res){
-			reload();
+			query();
 		});
 	}
 	
@@ -130,9 +132,16 @@
 	function toCheck(){
 		var data = $('#checkForm').serialize();
 		console.log("data:"+data);
-		$('#checkModal').modal('hide');
-		$('.alert').html("审核通过");
-		$('.alert').show();
+		$.post("/admin/article/update/status",data,function(res){
+			$('#checkModal').modal('hide');
+			$('.alert').html("审核通过");
+			$('.alert').show();
+			query();
+		});
+	}
+	
+	function view(id){
+		window.open("/article/"+id+".html");
 	}
 	
 </script>

@@ -32,3 +32,20 @@ $('input[name="chk_list"]').click(function(){
 	$("#chkALL").prop("checked",flag);
 	$("#antiChecked").prop("checked",false);
 });
+/**
+ * 获取选择的Id
+ * @returns ids
+ */
+function getCheckboxIds(){
+	var ids = "";
+	$('input[name="chk_list"]').each(function(index,value){
+		if($(value).prop("checked") == true){
+			if(ids==""){
+				ids+=$(value).val();
+			}else{
+				ids+=","+$(value).val();
+			}
+		}
+	});
+	return ids;
+}

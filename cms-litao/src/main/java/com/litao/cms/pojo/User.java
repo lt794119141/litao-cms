@@ -1,8 +1,10 @@
 package com.litao.cms.pojo;
 
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.bawei.utils.DateUtil;
+
 
 public class User implements Serializable{
     /**   
@@ -24,7 +26,7 @@ public class User implements Serializable{
 
     private Integer locked;
 
-    private String score;
+    private int score;
 
     private String role;
 
@@ -33,9 +35,16 @@ public class User implements Serializable{
     private Date createTime;
 
     private Date updateTime;
-    
+   
     public boolean isAdmin() {
     	return "1".equals(getRole());
+    }
+    
+    public String getBirthdayStr() {
+    	if(this.getBirthday()==null) {
+    		return null;
+    	}
+        return DateUtil.format(this.getBirthday());
     }
 
     @Override
@@ -80,6 +89,8 @@ public class User implements Serializable{
     public Date getBirthday() {
         return birthday;
     }
+    
+    
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
@@ -101,15 +112,17 @@ public class User implements Serializable{
         this.locked = locked;
     }
 
-    public String getScore() {
-        return score;
-    }
+    
 
-    public void setScore(String score) {
-        this.score = score == null ? null : score.trim();
-    }
+    public int getScore() {
+		return score;
+	}
 
-    public String getRole() {
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public String getRole() {
         return role;
     }
 
