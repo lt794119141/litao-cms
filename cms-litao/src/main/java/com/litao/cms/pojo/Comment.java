@@ -17,6 +17,9 @@ public class Comment  implements Serializable{
     private String content;
 
     private String created;
+    
+    private String nickname;
+    private String headimg;
 
     @Override
 	public String toString() {
@@ -63,4 +66,21 @@ public class Comment  implements Serializable{
     public void setCreated(String created) {
         this.created = created == null ? null : created.trim();
     }
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getHeadimg() {
+		return headimg;
+	}
+
+	public void setHeadimg(String headimg) {
+		this.headimg = headimg;
+	}
+    
 }

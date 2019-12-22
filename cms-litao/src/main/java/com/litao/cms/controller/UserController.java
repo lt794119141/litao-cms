@@ -68,12 +68,11 @@ public class UserController {
 		}
 		//判断密码
 		String string2md5 = CmsMd5Util.string2MD5(user.getPassword());
-		System.out.println("---------------"+string2md5);
 		if(string2md5.equals(userInfo.getPassword())) {
 			session.setAttribute(CmsConstant.UserSessionKey, userInfo);
 			return JsonResult.sucess();
 		}
-		return JsonResult.fail(500, "未知错误");
+		return JsonResult.fail(1000, "用户名或密码错误");
 	}
 	/**
 	 * @Title: logout   
@@ -157,9 +156,16 @@ public class UserController {
 	 */
 	@RequestMapping(value="settings",method=RequestMethod.POST)
 	@ResponseBody
-	public JsonResult settings(User user) {
-		userService.update(user);
-		return JsonResult.sucess();
+	public JsonResult settings(User user,HttpSession session) {
+		//修改用户信息
+		boolean result = userService.update(user);
+		if(result) {
+			//跟新session中的用户信息
+			User userInfo = userService.getById(user.getId());
+			session.setAttribute(CmsConstant.UserSessionKey, userInfo);
+			return JsonResult.sucess();
+		}
+		return JsonResult.fail(100002, "修改失败");
 	}
 	
 	@RequestMapping("comment")

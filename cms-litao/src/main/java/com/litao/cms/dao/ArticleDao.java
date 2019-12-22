@@ -128,4 +128,13 @@ public interface ArticleDao {
 	 * @throws
 	 */
 	List<Article> selectListByChannelIdAndCateId(@Param("channelId") Integer channelId, @Param("cateId") Integer cateId);
+	/**
+	 * @Title: selectNewList   
+	 * @Description: 查询最新文章   
+	 * @param: @param num
+	 * @param: @return      
+	 * @return: List<Article>      
+	 * @throws
+	 */
+	List<Article> selectNewList(@Param("num") int num);
 }

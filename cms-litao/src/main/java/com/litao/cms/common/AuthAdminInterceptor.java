@@ -15,7 +15,6 @@ public class AuthAdminInterceptor implements HandlerInterceptor{
 		Object userInfo = request.getSession().getAttribute(CmsConstant.UserAdminSessionKey);
 		if(userInfo!=null) {
 			return true;
-			
 		}
 	    response.sendRedirect("/admin/");
 		return false;

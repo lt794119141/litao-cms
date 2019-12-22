@@ -35,6 +35,8 @@ public class User implements Serializable{
     private Date createTime;
 
     private Date updateTime;
+    
+    private String headimg;
    
     public boolean isAdmin() {
     	return "1".equals(getRole());
@@ -58,7 +60,15 @@ public class User implements Serializable{
         return id;
     }
 
-    public void setId(Integer id) {
+    public String getHeadimg() {
+		return headimg;
+	}
+
+	public void setHeadimg(String headimg) {
+		this.headimg = headimg;
+	}
+
+	public void setId(Integer id) {
         this.id = id;
     }
 

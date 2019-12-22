@@ -37,5 +37,6 @@
 <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/public/js/cms.js"></script>
 <script type="text/javascript" src="/public/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="/public/js/jquery-validation-1.19.1/jquery.validate.min.js"></script>
 </body>
 </html>

@@ -51,7 +51,8 @@
 	      birthday = #{user.birthday},
 	      gender = #{user.gender},
 	      url = #{user.url},
-	      update_time = #{user.updateTime}
+	      update_time = #{user.updateTime},
+	      headimg = #{user.headimg}
 	    where id = #{user.id}
 	</update>
 	

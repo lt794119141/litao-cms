@@ -121,4 +121,13 @@ public interface ArticleService {
 	 * @throws
 	 */
 	PageInfo<Article> getListByChannelIdAndCateId(Integer channelId, Integer cateId, Integer pageNo);
+	/**
+	 * @Title: getNewList   
+	 * @Description: 查询指定条数的最新文章
+	 * @param: @param num
+	 * @param: @return      
+	 * @return: List<Article>      
+	 * @throws
+	 */
+	List<Article> getNewList(int num);
 }

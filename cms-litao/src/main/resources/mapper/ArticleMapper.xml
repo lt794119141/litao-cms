@@ -31,6 +31,14 @@
 		order by article.hot desc
 	</select>
 	
+	<select id="selectNewList" resultType="Article">
+		select article.*,article.channel_id channelId,article.user_id userId,article.category_id categoryId
+		from cms_article article
+		WHERE article.deleted=0 AND article.`status`=1
+		order by article.created desc
+		limit ${num}
+	</select>
+	
 	<select id="selectListByChannelIdAndCateId" resultType="Article">
 		select article.*,article.channel_id channelId,article.user_id userId,article.category_id categoryId,user.nickname
 		from cms_article article,cms_user user
