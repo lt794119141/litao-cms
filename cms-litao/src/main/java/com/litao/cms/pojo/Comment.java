@@ -82,5 +82,24 @@ public class Comment  implements Serializable{
 	public void setHeadimg(String headimg) {
 		this.headimg = headimg;
 	}
+
+	public Comment(Integer id, Integer articleid, Integer userid, String content, String created, String nickname,
+			String headimg) {
+		super();
+		this.id = id;
+		this.articleid = articleid;
+		this.userid = userid;
+		this.content = content;
+		this.created = created;
+		this.nickname = nickname;
+		this.headimg = headimg;
+	}
+
+	public Comment() {
+		super();
+	}
+
+	
     
+	
 }

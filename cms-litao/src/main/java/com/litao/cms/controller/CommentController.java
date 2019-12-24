@@ -60,4 +60,7 @@ public class CommentController {
 		model.addAttribute("pageInfo", pageInfo);
 		return "comment/list";
 	}
+	
+	
+	
 }

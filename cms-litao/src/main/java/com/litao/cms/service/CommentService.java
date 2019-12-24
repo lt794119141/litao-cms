@@ -12,6 +12,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.litao.cms.dao.CommentDao;
 import com.litao.cms.pojo.Comment;
+import com.litao.cms.pojo.User;
 @Service
 public class CommentService {
 	@Autowired
@@ -45,4 +46,13 @@ public class CommentService {
 		List<Comment> commentList = commentDao.select(comment);
 		return new PageInfo<>(commentList);
 	}
+	public PageInfo<Comment> getPageInfoById(User user, int pageNum, int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		Comment comment = new Comment();
+		comment.setUserid(user.getId());
+		List<Comment> commentList = commentDao.selectByUser(comment);
+		return new PageInfo<>(commentList);
+	}
+	
+	
 }

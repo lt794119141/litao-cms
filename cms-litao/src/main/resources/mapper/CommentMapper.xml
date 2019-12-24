@@ -41,4 +41,13 @@
 	<delete id="deleteByIds">
 		delete from cms_comment where id in(${ids})
 	</delete>
+	
+	<select id="selectByUser" resultType="Comment">
+		select c.*,u.nickname,u.headimg 
+		from cms_comment c,cms_user u where c.userId=u.id
+		<if test="comment.userid!=null">
+			and c.userid=#{comment.userid}
+		</if>
+		order by created desc
+	</select>
 </mapper>

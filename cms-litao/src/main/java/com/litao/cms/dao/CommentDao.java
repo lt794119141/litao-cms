@@ -70,4 +70,14 @@ public interface CommentDao {
 	 * @throws
 	 */
 	int deleteByIds(@Param("ids") String ids);
+	/**
+	 * 
+	* @Title: selectByUser 
+	* @Description: 根据用户id查评论
+	* @param @param comment
+	* @param @return    设定文件 
+	* @return List<Comment>    返回类型 
+	* @throws
+	 */
+	List<Comment> selectByUser(@Param("comment")Comment comment);
 }

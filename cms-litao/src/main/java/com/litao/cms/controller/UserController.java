@@ -20,8 +20,10 @@ import com.litao.cms.common.CmsMd5Util;
 import com.litao.cms.common.JsonResult;
 import com.litao.cms.pojo.Article;
 import com.litao.cms.pojo.Channel;
+import com.litao.cms.pojo.Comment;
 import com.litao.cms.pojo.User;
 import com.litao.cms.service.ArticleService;
+import com.litao.cms.service.CommentService;
 import com.litao.cms.service.UserService;
 
 @Controller
@@ -31,6 +33,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private ArticleService articleService;
+	@Autowired
+	private CommentService commentService;
 	
 	/**
 	 * @Title: login   
@@ -169,7 +173,11 @@ public class UserController {
 	}
 	
 	@RequestMapping("comment")
-	public String comment(HttpServletResponse response,HttpSession session) {
+	public String comment(HttpServletResponse response,HttpSession session,Model model,
+			@RequestParam(value="pageNum",defaultValue="1") int pageNum,@RequestParam(value="pageSize",defaultValue="3") int pageSize) {
+		User user = (User) session.getAttribute(CmsConstant.UserSessionKey);
+		PageInfo<Comment> pageInfo= commentService.getPageInfoById(user,pageNum,pageSize);
+		model.addAttribute("pageInfo", pageInfo);
 		return "user/comment";
 	}
 	

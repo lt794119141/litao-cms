@@ -26,6 +26,28 @@
 	<!-- 文件上传的处理类 -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+		
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/**"/>
+			<mvc:exclude-mapping path="/admin/"/>
+			<mvc:exclude-mapping path="/admin/user/login"/>
+			<bean class="com.litao.cms.common.AuthAdminInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/"/>
+			<mvc:exclude-mapping path="/admin/**"/>
+			<mvc:exclude-mapping path="/**/**.html"/>
+			<mvc:exclude-mapping path="/user/login"/>
+			<mvc:exclude-mapping path="/user/register"/>
+			<mvc:exclude-mapping path="/comment/list"/>
+			<bean class="com.litao.cms.common.AuthUserInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+		
+		
 
 
 </beans>
