@@ -1,27 +1,44 @@
 package com.litao.cms.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.elasticsearch.action.search.SearchAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.litao.cms.util.HLUtils;
 
+import scala.util.Random;
+
+import com.litao.cms.dao.ArticleRepository;
+import com.bawei.utils.StringUtil;
+import com.github.pagehelper.PageInfo;
 import com.litao.cms.common.CmsConstant;
 import com.litao.cms.common.JsonResult;
 import com.litao.cms.dao.ArticleDao;
 import com.litao.cms.pojo.Article;
 import com.litao.cms.pojo.Category;
 import com.litao.cms.pojo.Channel;
+import com.litao.cms.pojo.Collect;
+import com.litao.cms.pojo.Slide;
 import com.litao.cms.pojo.User;
 import com.litao.cms.service.ArticleService;
+import com.litao.cms.service.CollectService;
+import com.litao.cms.service.SlideService;
 
 @Controller
 @RequestMapping("/article/")
@@ -29,6 +46,37 @@ public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	@Autowired
+	private SlideService slideService;
+	
+	@Autowired
+	private ArticleRepository articleReposititory;
+	@Autowired
+	private ElasticsearchTemplate elasticsearchTemplate;
+	
+	@Autowired
+	private CollectService collectService;
+	
+	
+	/**文章搜索 */
+	@RequestMapping("search")
+	public String Search(@RequestParam(defaultValue="1")Integer pageNum,String key,Model model) {
+		
+		/** 频道 */
+		List<Channel> channelList = articleService.getChannelList();
+		model.addAttribute("channelList", channelList);
+		/** 轮播图 */
+		List<Slide> slideList = slideService.getAll();
+		model.addAttribute("slideList", slideList);
+		/** 最新文章 **/
+		List<Article> newArticleList = articleService.getNewList(6);
+		model.addAttribute("newArticleList", newArticleList);
+		/** 热点文章 **/
+		PageInfo<?> pageInfo = HLUtils.findByHighLight(elasticsearchTemplate, Article.class, pageNum, 6,new String[] {"title"}, "hot", key);
+		model.addAttribute("pageInfo", pageInfo);
+		return  "index";
+	}
 	
 	/**
 	 * @Title: add   
@@ -104,4 +152,52 @@ public class ArticleController {
 		}
 		return JsonResult.fail(500, "未知错误");
 	}
+	
+	@RequestMapping("collect")
+	public String  collecting(String url,HttpSession session,Model model) {
+		
+		String replace = url.replace("*","?");
+		System.out.println(replace);
+		String[] split = replace.split("id=");
+		if(StringUtil.isHttpUrl(replace)) {
+			User userInfo = (User)session.getAttribute(CmsConstant.UserSessionKey);
+			if(userInfo.getId()==null) {
+				return "redirect:/user/login";
+			}
+			int in=collectService.getCollect(split[1]);
+			if(in>0) {
+				model.addAttribute("succ", "您已收藏过，请勿重复收藏");
+				return "redirect:/article/"+split[1]+".html";
+			}
+			
+			Article article = articleService.getById(Integer.parseInt(split[1]));
+			Date date = new Date();
+			SimpleDateFormat format = new SimpleDateFormat();
+			String format2 = format.format(date);
+			System.out.println(format2);
+			String st1="20"+format2;
+			String st2=st1.replace("上午", "");
+			String st3=st2.replace("下午", "");
+			String st4=st3.replace("中午", "");
+			Random random = new Random();
+			int i = random.nextInt(60);
+			String created=st4+":"+i;
+			System.out.println(created);
+			
+			Collect collect = new Collect();
+			collect.setCreated(created);
+			collect.setText(article.getTitle());
+			collect.setUrl(replace);
+			collect.setUser_id(userInfo.getId());
+			boolean b=collectService.add(collect);
+			
+			model.addAttribute("succ", "收藏成功");
+		}else {
+			System.out.println("url地址错误");
+		}
+		
+		
+		return "redirect:/article/"+split[1]+".html";
+	}
+	
 }

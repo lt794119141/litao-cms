@@ -53,6 +53,17 @@
 			<div class="col-6">
 				
 				<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+				<form action="/article/search" method="get">
+				   <div class="input-group mb-3">
+					<input type="text" name="key" value="${key}" class="form-control"
+						placeholder="请输入要搜索的内容"
+						aria-label="Recipient's username" aria-describedby="button-addon2">
+					<div class="input-group-append">
+						<button class="btn btn-outline-secondary" 
+							id="button-addon2">搜索</button>
+					</div>
+				</div>
+				</form>
 				  <div class="carousel-inner">
 					  <c:forEach items="${slideList }" var="item" varStatus="s">
 						  <div class="carousel-item <c:if test="${s.index==0 }">active</c:if>">
@@ -94,6 +105,7 @@
 						  </div>
 						</div>
 				  </c:forEach>
+				  <font>本次耗时${second }秒</font>
 				</div>
 				<div style="text-align: center;">
 					<jsp:include page="common/page.jsp"></jsp:include>

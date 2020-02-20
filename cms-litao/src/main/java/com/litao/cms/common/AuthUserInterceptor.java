@@ -17,7 +17,7 @@ public class AuthUserInterceptor implements HandlerInterceptor{
 		if(userInfo!=null) {
 			return true;
 		}
-		//记住登录
+	
 		String username = CookieUtil.getCookieByName(request, "username");
 		if(StringUtil.isNotBlank(username)) {
 			UserService userService = SpringBeanUtils.getBean(UserService.class);

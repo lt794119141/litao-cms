@@ -21,7 +21,7 @@
 
 	<!--2、 指定外部属性文件的位置 -->
 	<context:property-placeholder
-		location="classpath:db.properties" />
+		location="classpath:db.properties" ignore-unresolvable="true" />
 
 	<!-- 3.使用druid数据源 连接池 -->
 	<bean id="dataSource" 
@@ -86,4 +86,9 @@
 		<property name="basePackage" value="com.litao.cms.dao"></property>
 
 	</bean>
+	
+	<import resource="es.xml"/>
+	<import resource="spring-redis.xml" />
+	<import resource="spring-kafka-consumer.xml"/>
+	<import resource="spring-kafka-producer.xml"/>
 </beans>

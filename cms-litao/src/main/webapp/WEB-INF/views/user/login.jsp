@@ -29,6 +29,7 @@
 			    <!-- <label for="exampleInputPassword1">密码</label> -->
 			    <input type="password" id="password" name="password" class="form-control"  placeholder="请输入密码...">
 			  </div>
+			  <input type="checkbox" id="remeber" name="remeber" value="1">记住登录<br>
 			  <button type="button" class="btn btn-primary" onclick="login();">登录</button>
 			  <label for="exampleInputPassword1">没有帐号，去<a href="/user/register">注册</a></label>
 			</form>

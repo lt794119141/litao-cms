@@ -3,6 +3,7 @@ package com.litao.cms.controller.admin;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
+import com.litao.cms.dao.ArticleRepository;
 import com.litao.cms.pojo.Article;
 import com.litao.cms.pojo.Channel;
 import com.litao.cms.pojo.User;
@@ -21,6 +23,9 @@ import com.litao.cms.service.UserService;
 public class AdminController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ArticleRepository articleRepository;
 	
 	@Autowired
 	private ArticleService articleService;
@@ -135,6 +140,8 @@ public class AdminController {
 	@RequestMapping("/article/update/status")
 	@ResponseBody
 	public boolean updateArticleStatus(Article article) {
+		article.setStatus(1);
+		articleRepository.save(article);
 		return articleService.updateStatus(article.getId(), article.getStatus());
 	}
 	/**

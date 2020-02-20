@@ -2,6 +2,7 @@ package com.litao.cms.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -17,12 +18,16 @@ import com.bawei.utils.StringUtil;
 import com.github.pagehelper.PageInfo;
 import com.litao.cms.common.CmsConstant;
 import com.litao.cms.common.CmsMd5Util;
+import com.litao.cms.common.CookieUtil;
 import com.litao.cms.common.JsonResult;
+import com.litao.cms.common.SpringBeanUtils;
 import com.litao.cms.pojo.Article;
 import com.litao.cms.pojo.Channel;
+import com.litao.cms.pojo.Collect;
 import com.litao.cms.pojo.Comment;
 import com.litao.cms.pojo.User;
 import com.litao.cms.service.ArticleService;
+import com.litao.cms.service.CollectService;
 import com.litao.cms.service.CommentService;
 import com.litao.cms.service.UserService;
 
@@ -35,6 +40,9 @@ public class UserController {
 	private ArticleService articleService;
 	@Autowired
 	private CommentService commentService;
+	@Autowired
+	private CollectService collectService;
+	
 	
 	/**
 	 * @Title: login   
@@ -44,8 +52,15 @@ public class UserController {
 	 * @throws
 	 */
 	@RequestMapping(value="login",method=RequestMethod.GET)
-	public Object login() {
+	public Object login(HttpServletRequest request,HttpSession session) {
 		
+		String username = CookieUtil.getCookieByName(request, "username");
+		UserService userService = SpringBeanUtils.getBean(UserService.class);
+		 User user = userService.getByUsername(username);
+		if(username!=null && username!="") {
+			session.setAttribute(CmsConstant.UserSessionKey, user);
+			return "redirect:/";
+		}
 		return "/user/login";
 	}
 	/**
@@ -59,7 +74,10 @@ public class UserController {
 	 */
 	@RequestMapping(value="login",method=RequestMethod.POST)
 	@ResponseBody
-	public Object login(User user,HttpSession session) {
+	public Object login(User user,HttpSession session,HttpServletResponse response) {
+		
+		
+		
 		//判断用户名和密码
 		if(StringUtil.isBlank(user.getUsername()) || StringUtil.isBlank(user.getPassword())) {
 			return JsonResult.fail(1000, "用户名和密码不能为空");
@@ -74,6 +92,10 @@ public class UserController {
 		String string2md5 = CmsMd5Util.string2MD5(user.getPassword());
 		if(string2md5.equals(userInfo.getPassword())) {
 			session.setAttribute(CmsConstant.UserSessionKey, userInfo);
+			if("1".equals(user.getRemeber())) {
+				int maxAge=1000*60*60*24;
+				CookieUtil.addCookie(response, "username", user.getUsername(),null,null, maxAge);
+			}
 			return JsonResult.sucess();
 		}
 		return JsonResult.fail(1000, "用户名或密码错误");
@@ -90,6 +112,7 @@ public class UserController {
 	@RequestMapping("logout")
 	public Object logout(HttpServletResponse response,HttpSession session) {
 		session.removeAttribute(CmsConstant.UserSessionKey);
+		CookieUtil.addCookie(response, "username", null, null,null, null);
 		return "redirect:/";
 	}
 	
@@ -194,6 +217,19 @@ public class UserController {
 		model.addAttribute("channelList", channelList);
 		return "user/article";
 	}
+	
+	@RequestMapping("collect")
+	public String collect(Model model,HttpSession session,
+			@RequestParam(value="pageNum",defaultValue="1") int pageNum,@RequestParam(value="pageSize",defaultValue="3") int pageSize) {
+		//设置用户Id
+		User userInfo = (User)session.getAttribute(CmsConstant.UserSessionKey);
+		//查询文章
+		PageInfo<Collect> pageInfo=collectService.getPageInfo(userInfo.getId(),pageNum,pageSize);
+		model.addAttribute("pageInfo", pageInfo);
+		return "user/collect";
+	}
+	
+	
 	
 	
 	

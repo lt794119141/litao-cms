@@ -3,6 +3,12 @@ package com.litao.cms.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
+@Document(indexName = "cms-litao", type = "article")
 public class Article implements Serializable{
 	
     /**   
@@ -10,8 +16,10 @@ public class Article implements Serializable{
 	 */  
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	private Integer id;
 
+	@Field(index = true, analyzer = "ik_smart", store = true, searchAnalyzer = "ik_smart", type = FieldType.text)
     private String title;
 
     private String picture;

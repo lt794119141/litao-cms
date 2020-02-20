@@ -9,6 +9,7 @@ import com.litao.cms.pojo.Channel;
 import com.litao.cms.pojo.User;
 
 public interface ArticleService {
+	List<Article> getArticle();
 	/**
 	 * @Title: getPageInfo   
 	 * @Description: 分页列表   
@@ -130,4 +131,6 @@ public interface ArticleService {
 	 * @throws
 	 */
 	List<Article> getNewList(int num);
+	int addArticle(Article article);
+	void addHit(Integer id,Integer hits);
 }

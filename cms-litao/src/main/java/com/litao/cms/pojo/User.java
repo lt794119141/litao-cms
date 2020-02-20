@@ -37,6 +37,8 @@ public class User implements Serializable{
     private Date updateTime;
     
     private String headimg;
+    
+    private String remeber;
    
     public boolean isAdmin() {
     	return "1".equals(getRole());
@@ -49,11 +51,14 @@ public class User implements Serializable{
         return DateUtil.format(this.getBirthday());
     }
 
-    @Override
+   
+
+	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", nickname=" + nickname
 				+ ", birthday=" + birthday + ", gender=" + gender + ", locked=" + locked + ", score=" + score
-				+ ", role=" + role + ", url=" + url + ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
+				+ ", role=" + role + ", url=" + url + ", createTime=" + createTime + ", updateTime=" + updateTime
+				+ ", headimg=" + headimg + ", remeber=" + remeber + "]";
 	}
 
 	public Integer getId() {
@@ -163,4 +168,12 @@ public class User implements Serializable{
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+	public String getRemeber() {
+		return remeber;
+	}
+
+	public void setRemeber(String remeber) {
+		this.remeber = remeber;
+	}
 }

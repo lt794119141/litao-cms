@@ -137,4 +137,9 @@ public interface ArticleDao {
 	 * @throws
 	 */
 	List<Article> selectNewList(@Param("num") int num);
+	
+	List<Article> getArticle();
+	
+	
+	void addhit(@Param("id")Integer id,@Param("hits") Integer hits);
 }

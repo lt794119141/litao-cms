@@ -1,6 +1,7 @@
 package com.litao.cms.service.impl;
 
 import java.util.Date;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.litao.cms.pojo.Article;
 import com.litao.cms.pojo.Category;
 import com.litao.cms.pojo.Channel;
 import com.litao.cms.service.ArticleService;
+
 @Service
 public class ArticleServiceImpl implements ArticleService {
 	@Autowired
@@ -113,6 +115,26 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<Article> getNewList(int num) {
 		return articleDao.selectNewList(num);
+	}
+
+	@Override
+	public List<Article> getArticle() {
+		// TODO Auto-generated method stub
+		return articleDao.getArticle();
+	}
+
+	@Override
+	public int addArticle(Article article) {
+		// TODO Auto-generated method stub
+		return articleDao.insert(article);
+	}
+
+	@Override
+	public void addHit(Integer id,Integer hits) {
+		// TODO Auto-generated method stub
+		
+		
+		articleDao.addhit(id,hits);
 	}
 
 }
