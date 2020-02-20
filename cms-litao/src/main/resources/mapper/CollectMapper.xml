@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.litao.cms.dao.CollectDao">
+  
+  
+  
+  
+  <select id="select" resultType="Collect">
+		select * from cms_collect where user_id =#{id} order by created desc
+	</select>
+	
+	<delete id="delByIds">
+		delete from cms_collect where id in (${ids})
+	</delete>
+	
+	<insert id="add">
+		insert into cms_collect
+		 (text,url,created,user_id) values
+		  (#{collect.text},#{collect.url},#{collect.created},#{collect.user_id})
+	</insert>
+	
+	<select id="getCollect" resultType="Integer">
+		select count(*) from cms_collect 
+		where url =#{url}
+	</select>
+	
+	
+</mapper>
